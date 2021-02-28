@@ -11,14 +11,9 @@ jobs:
       - name: Active qemu
         run: |
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
-      - name: Check the result
-        run: |
-          docker build -t testimage -<<EOF
-          FROM arm64v8/python
-          RUN echo "Hello" && uname -m
-          CMD ["uname", "-m"]
-          EOF
-          docker run --rm testimage
+      - uses: docker://multiarch/ubuntu-core:arm64-bionic
+        with:
+          args: 'uname -a'
   docker:
     runs-on: ubuntu-latest
     steps:
