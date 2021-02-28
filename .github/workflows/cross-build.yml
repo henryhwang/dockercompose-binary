@@ -13,7 +13,12 @@ jobs:
           docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
       - name: Check the result
         run: |
-          docker run --rm arm64v8/alpine uname -m
+          docker build -t testimage -<<EOF
+          FROM arm64v8/python
+          RUN echo "Hello" && uname -m
+          CMD ["uname", "-m"]
+          EOF
+          docker run --rm testimage
   docker:
     runs-on: ubuntu-latest
     steps:
@@ -24,5 +29,9 @@ jobs:
         run: echo ${{ steps.qemu.outputs.platforms }}
       - name: Check the result
         run: |
-          docker run --rm arm64v8/alpine uname -m
-          
+          docker build -t testimage -<<EOF
+          FROM arm64v8/python
+          RUN echo "Hello" && uname -m
+          CMD ["uname", "-m"]
+          EOF
+          docker run --rm testimage
