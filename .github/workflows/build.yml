@@ -12,6 +12,7 @@ jobs:
         run: |
           cd native-build
           ./build_binary.sh
+          pwd
           ls -l ./dist
       - name: Create Release
         id: create_release
@@ -30,7 +31,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./dist/docker-compose-linux-amd64-1.27.4.tgz
+          asset_path: ./native-build/dist/docker-compose-linux-amd64-1.27.4.tgz
           asset_name: docker-compose-linux-amd64-1.27.4.tgz
           asset_content_type: application/gzip
 
