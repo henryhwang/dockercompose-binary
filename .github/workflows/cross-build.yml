@@ -2,10 +2,11 @@ name: cross_arm64
 on:
   push:
     tags:
-      - v*
+      - T*
 
 jobs:
   multiarch:
+    if: false
     runs-on: ubuntu-latest
     steps:
       - name: Active qemu
@@ -32,3 +33,17 @@ jobs:
         run: |
           docker pull arm64v8/python:buster
           docker run --rm arm64v8/python:buster uname -a
+  build-arm64:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Active qemu
+        id: qemu
+        uses: docker/setup-qemu-action@v1
+      - name: Setup build docker
+        uses: actions/checkout@v2
+        with:
+          repository: 'docker/compose'
+      - name: build
+        run: |
+          ./script/build/linux
+          ls -l dist
