@@ -49,6 +49,8 @@ jobs:
           repository: 'docker/compose'
       - name: Replace the Dockerfile in the docker/compose repo
         run: |
+          pwd
+          ls -la ./tools
           cp ./tools/Dockerfile ./Dockerfile
       - name: build
         run: |
