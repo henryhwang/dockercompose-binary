@@ -49,26 +49,13 @@ jobs:
           path: tools
       - name: Replace the Dockerfile in the docker/compose repo
         run: |
-          pwd
-          ls -la .
-          ls -la ./tools
           cp ./tools/Dockerfile ./Dockerfile
+          cp ./tools/build_binary.sh ./build_binary.sh
       - name: build
         run: |
-          set -ex
-          
-          ./script/clean
-
-          DOCKER_COMPOSE_GITSHA="$(script/build/write-git-sha)"
-          export DOCKER_BUILDKIT=1
-          docker build . \
-              --target bin \
-              --build-arg DISTRO=debian \
-              --build-arg GIT_COMMIT="${DOCKER_COMPOSE_GITSHA}" \
-              --build-arg TARGETOS="linux" \
-              --build-arg TARGETARCH="arm64v8" \
-              --output dist/
-          ARCH=$(uname -m)
-          pwd
-          ls -la .
-          ls -la dist
+          ./build_binary.sh
+      - name: Upload the build result
+        uses: actions/upload-artifact@v2
+        with:
+          name: temp-result
+          path: dist
