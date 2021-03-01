@@ -9,7 +9,7 @@ RUN apt update && apt install --no-install-recommends -y \
 		gcc \
 		libc-dev \
 		libffi-dev \
-		libgcc-dev \
+		libgcc-6-dev \
 		libssl-dev \
 		make \
 		openssl \
