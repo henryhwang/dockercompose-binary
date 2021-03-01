@@ -64,6 +64,8 @@ jobs:
           docker build . \
               --build-arg DISTRO=debian \
               --build-arg GIT_COMMIT="${DOCKER_COMPOSE_GITSHA}" \
+              --build-arg TARGETOS="linux" \
+              --build-arg TARGETARCH="amd64"
               --output dist/
           ARCH=$(uname -m)
           pwd

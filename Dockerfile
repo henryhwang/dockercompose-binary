@@ -41,3 +41,8 @@ COPY . .
 ARG GIT_COMMIT=unkonwn
 ENV DOCKER_COMPOSE_GITSHA=$GIT_COMMIT
 RUN script/build/linux-entrypoint
+
+FROM scratch as bin
+ARG TARGETARCH
+ARG TARGETOS
+COPY --from=build /usr/local/bin/docker-compose /docker-compose-${TARGETOS}-${TARGETARCH}
