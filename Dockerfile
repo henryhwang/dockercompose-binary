@@ -36,7 +36,7 @@ COPY tox.ini .
 COPY setup.py .
 COPY README.md .
 COPY compose compose/
-#RUN tox -e py37 --notest
+RUN tox -e py37 --notest
 
 COPY . .
 ARG GIT_COMMIT=unkonwn
