@@ -62,6 +62,7 @@ jobs:
           DOCKER_COMPOSE_GITSHA="$(script/build/write-git-sha)"
           export DOCKER_BUILDKIT=1
           docker build . \
+              --target build \
               --build-arg DISTRO=debian \
               --build-arg GIT_COMMIT="${DOCKER_COMPOSE_GITSHA}" \
               --build-arg TARGETOS="linux" \
