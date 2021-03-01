@@ -39,10 +39,17 @@ jobs:
       - name: Active qemu
         id: qemu
         uses: docker/setup-qemu-action@v1
-      - name: Setup build docker
+      - name: Checkout this repo into tools/ directory
+        uses: actions/checkout@v2
+        with:
+          path: 'tools'
+      - name: Checkout docker/compose repo
         uses: actions/checkout@v2
         with:
           repository: 'docker/compose'
+      - name: Replace the Dockerfile in the docker/compose repo
+        run: |
+          cp ./tools/Dockerfile ./Dockerfile
       - name: build
         run: |
           set -ex
@@ -52,10 +59,10 @@ jobs:
           DOCKER_COMPOSE_GITSHA="$(script/build/write-git-sha)"
 
           docker build . \
-              --target bin \
               --build-arg DISTRO=debian \
               --build-arg GIT_COMMIT="${DOCKER_COMPOSE_GITSHA}" \
               --output dist/
           ARCH=$(uname -m)
           pwd
-          ls -la ./dist
+          ls -la .
+          ls -la dist
