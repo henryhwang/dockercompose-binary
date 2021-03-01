@@ -4,7 +4,7 @@ ARG PYTHON_VERSION=3.7.10
 ARG BUILD_DEBIAN_VERSION=slim-stretch
 
 FROM python:${PYTHON_VERSION}-${BUILD_DEBIAN_VERSION} as build
-RUN apt update && apt install --no-install-recommands -y \
+RUN apt update && apt install --no-install-recommends -y \
 		curl \
 		gcc \
 		libc-dev \
