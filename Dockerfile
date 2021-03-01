@@ -1,9 +1,10 @@
+ARG TARGETARCH=arm64v8
 ARG DOCKER_VERSION=19.03
 ARG PYTHON_VERSION=3.7.10
 
 ARG BUILD_DEBIAN_VERSION=slim-stretch
 
-FROM python:${PYTHON_VERSION}-${BUILD_DEBIAN_VERSION} as build
+FROM ${TARGETARCH}/python:${PYTHON_VERSION}-${BUILD_DEBIAN_VERSION} as build
 RUN apt update && apt install --no-install-recommends -y \
 		curl \
 		gcc \
