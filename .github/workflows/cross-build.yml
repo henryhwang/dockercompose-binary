@@ -39,14 +39,14 @@ jobs:
       - name: Active qemu
         id: qemu
         uses: docker/setup-qemu-action@v1
-      - name: Checkout this repo into tools/ directory
-        uses: actions/checkout@v2
-        with:
-          path: 'tools'
       - name: Checkout docker/compose repo
         uses: actions/checkout@v2
         with:
           repository: 'docker/compose'
+      - name: Checkout this repo into tools/ directory
+        uses: actions/checkout@v2
+        with:
+          path: tools
       - name: Replace the Dockerfile in the docker/compose repo
         run: |
           pwd
