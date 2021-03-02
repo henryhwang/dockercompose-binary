@@ -46,7 +46,7 @@ jobs:
           owner: henryhwang
           repo: dockercompose-binary
       - name: Example of consumption of the result
-        if: C_LATEST_VERSION != B_LATEST_VERSION
+        if: ${{ steps.compose_latest_version.outputs.latest_tag }} != ${{ steps.binary_latest_version.outputs.latest_tag }}
         env:
           C_LATEST_VERSION: ${{ steps.compose_latest_version.outputs.latest_tag }}
           C_LATEST_DATE: ${{ steps.compose_latest_version.outputs.latest_tag_published_at }}
