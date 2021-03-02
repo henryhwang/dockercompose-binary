@@ -1,4 +1,4 @@
-ARG TARGETARCH=
+ARG TARGETARCH="arm64v8/"
 ARG DOCKER_VERSION=19.03
 ARG PYTHON_VERSION=3.7.10
 
@@ -24,9 +24,9 @@ ENV DOCKER_COMPOSE_GITSHA=$GIT_COMMIT
 
 #RUN script/build/linux-entrypoint
 RUN mkdir -p dist \
-    && chmod 777 dist
-RUN pip install -q -r requirements.txt -r requirements-build.txt
-RUN DOCKER_COMPOSE_GITSHA="$(script/build/write-git-sha)" \
+    && chmod 777 dist \
+    && pip install -q -r requirements.txt -r requirements-build.txt \
+    && DOCKER_COMPOSE_GITSHA="$(script/build/write-git-sha)" \
     && echo "${DOCKER_COMPOSE_GITSHA}" > compose/GITSHA \
     && export PATH="/code/pyinstaller:${PATH}"
 RUN \
