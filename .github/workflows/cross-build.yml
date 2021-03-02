@@ -33,8 +33,21 @@ jobs:
         run: |
           docker pull arm64v8/python:buster
           docker run --rm arm64v8/python:3.7.10-slim-stretch uname -a
+      - name: Check the latest release of docker/compose
+        id: latest_version
+        uses: abatilo/release-info-action@v1.3.0
+        with:
+          owner: docker
+          repo: compose
+      - name: Example of consumption of the result
+        env:
+          LATEST_VERSION: ${{ steps.latest_version.outputs.latest_tag }}
+          LATEST_DATE: ${{ steps.latest_version.outputs.latest_tag_published_at }}
+          LATEST_COMMIT: ${{ steps.latest_version.outputs.latest_commitish }}
+        run: |
+          echo "Version $LATEST_VERSION was released at $LATEST_DATE with LATEST_COMMIT"
   build-arm64:
-    if: true
+    if: false
     runs-on: ubuntu-latest
     steps:
       - name: Active qemu
@@ -48,22 +61,16 @@ jobs:
         uses: actions/checkout@v2
         with:
           path: tools
-      - name: Replace the Dockerfile in the docker/compose repo
-        run: |
-          cp ./tools/Dockerfile ./Dockerfile
-          cp ./tools/build_binary.sh ./build_binary.sh
-      - name: build
+      - name: Build compose to binary using Docker build
         run: |
           set -ex
           export DOCKER_BUILDKIT=1
 
           ./script/clean
 
-          DOCKER_COMPOSE_GITSHA="$(script/build/write-git-sha)"
+          DOCKER_COMPOSE_GITSHA="$(./script/build/write-git-sha)"
           docker build . \
-              -f tools/Dockerfile.build-only \
-              --target bin \
-              --build-arg DISTRO=debian \
+              -f ./tools/Dockerfile.build-only \
               --build-arg GIT_COMMIT="${DOCKER_COMPOSE_GITSHA}" \
               --build-arg TARGETOS="linux" \
               --output dist/
