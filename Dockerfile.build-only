@@ -14,7 +14,8 @@ RUN apt update && apt install --no-install-recommends -y \
 		libssl-dev \
 		make \
 		openssl \
-		zlib1g-dev
+		zlib1g-dev \
+        git
 WORKDIR /code/
 
 COPY . .
