@@ -22,11 +22,12 @@ ARG GIT_COMMIT=unkonwn
 ENV DOCKER_COMPOSE_GITSHA=$GIT_COMMIT
 
 #RUN script/build/linux-entrypoint
-RUN git clone https://github.com/docker/compose.git . \
+RUN set -ex \
+    && git clone https://github.com/docker/compose.git . \
     && mkdir -p dist \
     && chmod 777 dist \
     && pip install -q -r requirement-build.txt \
-    && DOCKER_COMPOSE_GITSHA="$(./script/build-git-sha)" \
+    && DOCKER_COMPOSE_GITSHA="$(script/build-git-sha)" \
     && echo "${DOCKER_COMPOSE_GITSHA}" > compose/GITSHA \
     && export PATH="/code/pyinstaller:${PATH}"
 RUN \
