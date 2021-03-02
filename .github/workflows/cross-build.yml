@@ -56,7 +56,7 @@ jobs:
           B_LATEST_COMMIT: ${{ steps.binary_latest_version.outputs.latest_commitish }}
         run: |
           echo "Version $C_LATEST_VERSION was released at $C_LATEST_DATE with $C_LATEST_COMMIT"
-          echo "Version $C_LATEST_VERSION was released at $C_LATEST_DATE with $C_LATEST_COMMIT"
+          echo "Version $B_LATEST_VERSION was released at $B_LATEST_DATE with $B_LATEST_COMMIT"
           echo "New docker-compose!"
   build-arm64:
     if: false
