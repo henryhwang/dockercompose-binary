@@ -34,18 +34,28 @@ jobs:
           docker pull arm64v8/python:buster
           docker run --rm arm64v8/python:3.7.10-slim-stretch uname -a
       - name: Check the latest release of docker/compose
-        id: latest_version
+        id: compose_latest_version
         uses: abatilo/release-info-action@v1.3.0
         with:
           owner: docker
           repo: compose
+      - name: Get the latest release of this repo
+        id: binary_latest_version
+        uses: abatilo/release-info-action@v1.3.0
+        with:
+          owner: henryhwang
+          repo: dockercompose_binary
       - name: Example of consumption of the result
         env:
-          LATEST_VERSION: ${{ steps.latest_version.outputs.latest_tag }}
-          LATEST_DATE: ${{ steps.latest_version.outputs.latest_tag_published_at }}
-          LATEST_COMMIT: ${{ steps.latest_version.outputs.latest_commitish }}
+          C_LATEST_VERSION: ${{ steps.compose_latest_version.outputs.latest_tag }}
+          C_LATEST_DATE: ${{ steps.compose_latest_version.outputs.latest_tag_published_at }}
+          C_LATEST_COMMIT: ${{ steps.compose_latest_version.outputs.latest_commitish }}
+          B_LATEST_VERSION: ${{ steps.binary_latest_version.outputs.latest_tag }}
+          B_LATEST_DATE: ${{ steps.binary_latest_version.outputs.latest_tag_published_at }}
+          B_LATEST_COMMIT: ${{ steps.binary_latest_version.outputs.latest_commitish }}
         run: |
-          echo "Version $LATEST_VERSION was released at $LATEST_DATE with LATEST_COMMIT"
+          echo "Version $C_LATEST_VERSION was released at $C_LATEST_DATE with $C_LATEST_COMMIT"
+          echo "Version $C_LATEST_VERSION was released at $C_LATEST_DATE with $C_LATEST_COMMIT"
   build-arm64:
     if: false
     runs-on: ubuntu-latest
