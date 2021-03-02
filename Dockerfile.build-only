@@ -33,7 +33,7 @@ RUN \
     git clone --single-branch --branch develop https://github.com/pyinstaller/pyinstaller.git /tmp/pyinstaller \
     && cd /tmp/pyinstaller/bootloader \
     && git checkout v4.1 \
-    && python ./waf config --no-lsb all \
+    && python ./waf configure --no-lsb all \
     && pip install .. \
     && cd /code \
     && rm -Rf /tmp/pyinstaller
