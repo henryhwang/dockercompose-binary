@@ -1,0 +1,45 @@
+ARG TARGETARCH=
+ARG DOCKER_VERSION=19.03
+ARG PYTHON_VERSION=3.7.10
+
+ARG BUILD_DEBIAN_VERSION=slim-stretch
+
+FROM ${TARGETARCH}python:${PYTHON_VERSION}-${BUILD_DEBIAN_VERSION} as build
+RUN apt update && apt install --no-install-recommends -y \
+		curl \
+		gcc \
+		libc-dev \
+		libffi-dev \
+		libgcc-6-dev \
+		libssl-dev \
+		make \
+		openssl \
+		zlib1g-dev
+WORKDIR /code/
+
+COPY . .
+ARG GIT_COMMIT=unkonwn
+ENV DOCKER_COMPOSE_GITSHA=$GIT_COMMIT
+
+#RUN script/build/linux-entrypoint
+RUN mkdir -p dist \
+    && chmod 777 dist \
+    && pip install -q -r requirement-build.txt \
+    && DOCKER_COMPOSE_GITSHA="$(./script/build-git-sha)" \
+    && echo "${DOCKER_COMPOSE_GITSHA}" > compose/GITSHA \
+    && export PATH="/code/pyinstaller:${PATH}"
+RUN \
+    git clone --single-branch --branch develop https://github.com/pyinstaller/pyinstaller.git /tmp/pyinstaller \
+    && cd /tmp/pyinstaller/bootloader \
+    && git checkout v4.1 \
+    && python ./waf config --no-lsb all \
+    && pip install .. \
+    && cd /code \
+    && rm -Rf /tmp/pyinstaller
+RUN pyinstaller --exclude-module pycrypto --exclude-module PyInstaller docker-compose.spec \
+    && mv dist/docker-compose /usr/local/bin
+
+FROM scratch as bin
+ARG TARGETARCH
+ARG TARGETOS
+COPY --from=build /usr/local/bin/docker-compose /docker-compose-${TARGETOS}-${TARGETARCH}
