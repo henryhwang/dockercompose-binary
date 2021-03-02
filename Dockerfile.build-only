@@ -26,7 +26,7 @@ ENV DOCKER_COMPOSE_GITSHA=$GIT_COMMIT
 RUN mkdir -p dist \
     && chmod 777 dist
 RUN pip install -q -r requirements-build.txt
-RUN DOCKER_COMPOSE_GITSHA="$(script/build-git-sha)" \
+RUN DOCKER_COMPOSE_GITSHA="$(script/build/write-git-sha)" \
     && echo "${DOCKER_COMPOSE_GITSHA}" > compose/GITSHA \
     && export PATH="/code/pyinstaller:${PATH}"
 RUN \
