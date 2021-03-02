@@ -44,7 +44,7 @@ jobs:
         uses: abatilo/release-info-action@v1.3.0
         with:
           owner: henryhwang
-          repo: dockercompose_binary
+          repo: dockercompose-binary
       - name: Example of consumption of the result
         env:
           C_LATEST_VERSION: ${{ steps.compose_latest_version.outputs.latest_tag }}
