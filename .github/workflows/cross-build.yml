@@ -56,6 +56,10 @@ jobs:
         run: |
           echo "Version $C_LATEST_VERSION was released at $C_LATEST_DATE with $C_LATEST_COMMIT"
           echo "Version $C_LATEST_VERSION was released at $C_LATEST_DATE with $C_LATEST_COMMIT"
+      - name: Test if
+        if: C_LATEST_VERSION != B_LATEST_VERSION
+        run: |
+          echo "New docker-compose!"
   build-arm64:
     if: false
     runs-on: ubuntu-latest
